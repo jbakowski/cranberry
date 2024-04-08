@@ -1,4 +1,4 @@
-name: Build Cranberry image
+name: Build and pre-release Cranberry image
 
 on:
   push:
@@ -32,3 +32,23 @@ jobs:
       with:
         name: kernel8-img
         path: kernel8.img
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: true
+
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./kernel8.img
+        asset_name: kernel8.img
+        asset_content_type: application/octet-stream
