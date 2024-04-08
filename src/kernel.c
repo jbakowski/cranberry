@@ -1,10 +1,28 @@
 #include "mini_uart.h"
+#include "smp.h"
 
-void kernel_main(void) {
-    uart_init (0);
-    uart_send_string ("Hello world!\r\n");
+volatile int busy;
 
-    while (1) {
-        uart_send (uart_recv());
+void kernel_secondary(unsigned int pid) {
+    while(busy) {
+        delay(10);
     }
+    busy = 1;
+    uart_send_string("Hello, from core: ");
+    uart_send(pid + '0');
+    uart_send_string("\r\n");
+    busy = 0;
+    while(1);
+}
+
+void kernel_main(int secondaryWakeupAddress) {
+    uart_init(9600);
+    uart_send_string("Hello world, from the main core!\r\n");
+
+    uart_send_string("Waking up core 2...\r\n");
+    wakeup_core(2, secondaryWakeupAddress);
+    uart_send_string("Waking up core 3...\r\n");
+    wakeup_core(3, secondaryWakeupAddress);
+
+    uart_send_string("All cores running, main process exiting\r\n");
 }

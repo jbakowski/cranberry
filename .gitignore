@@ -1,6 +1,7 @@
 .devcontainer/
+.dockerignore
 .github/
 .vscode/
 
 build/
-.img
+*.img
