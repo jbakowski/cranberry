@@ -1,0 +1,26 @@
+name: Build Cranberry image
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build_image:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out repository code
+      uses: actions/checkout@v4
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag buildenv:$(date +%s)
+    - name: Run make all in the Docker container
+      run: |
+          docker run --name build_container -v ${{ github.workspace }}:/workspace buildenv make -C /workspace all
+    - name: Copy kernel8.img from Docker container
+      run: docker cp build_container:/workspace/kernel8.img kernel8.img
+    - name: Upload kernel8.img as an artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: kernel8-img
+        path: kernel8.img
