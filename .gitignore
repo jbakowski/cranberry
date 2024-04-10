@@ -3,5 +3,10 @@
 .github/
 .vscode/
 
-build/
-*.img
+scripts/
+include/config/
+include/generated
+.config
+
+cranberry.elf
+kernel8.img

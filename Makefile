@@ -573,7 +573,7 @@ cranberry-objs	:= $(patsubst %,%/built-in.o, $(objs-y))
 cranberry-all	:= $(cranberry-objs)
 
 quiet_cmd_cranberry = LD      $@
-      cmd_cranberry = $(LD) $(LDFLAGS) -T linker.ld -o $@.elf $(cranberry-objs) | $(OBJCOPY) cranberry.elf -O binary kernel8.img
+      cmd_cranberry = $(LD) $(LDFLAGS) -T linker.ld -o $@.elf $(cranberry-objs) | sleep 3 | $(OBJCOPY) cranberry.elf -O binary kernel8.img
 
 cranberry: $(cranberry-all) FORCE
 	+$(call if_changed,cranberry)
@@ -658,7 +658,7 @@ headerdep:
 
 # Directories & files removed with 'make clean'
 CLEAN_DIRS  +=
-CLEAN_FILES +=	cranberry
+CLEAN_FILES +=	cranberry.elf kernel8.img
 
 # Directories & files removed with 'make mrproper'
 MRPROPER_DIRS  += include/config include/generated .tmp_objdiff

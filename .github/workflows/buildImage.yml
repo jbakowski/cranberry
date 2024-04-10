@@ -17,6 +17,8 @@ jobs:
     - name: Run make all in the Docker container
       run: |
           docker run --name build_container -v ${{ github.workspace }}:/workspace buildenv make -C /workspace all
+          docker run --name build_container -v ${{ github.workspace }}:/workspace buildenv sleep 5 /workspace all
+          docker run --name build_container -v ${{ github.workspace }}:/workspace buildenv make -C /workspace all
     - name: Copy kernel8.img from Docker container
       run: docker cp build_container:/workspace/kernel8.img kernel8.img
     - name: Upload kernel8.img as an artifact
