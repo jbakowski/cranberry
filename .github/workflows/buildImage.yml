@@ -13,12 +13,12 @@ jobs:
     - name: Check out repository code
       uses: actions/checkout@v4
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag buildenv:$(date +%s)
+      run: docker build . --file Dockerfile --tag buildenv:0.0.1
     - name: Run make all in the Docker container
       run: |
-          docker run --name build_container -v ${{ github.workspace }}:/workspace buildenv make -C /workspace all
-          docker run --name build_container -v ${{ github.workspace }}:/workspace buildenv sleep 5 /workspace all
-          docker run --name build_container -v ${{ github.workspace }}:/workspace buildenv make -C /workspace all
+          docker run --name build_container -v ${{ github.workspace }}:/workspace buildenv:0.0.1 make -C /workspace all
+          docker run --name build_container -v ${{ github.workspace }}:/workspace buildenv:0.0.1 sleep 5 /workspace all
+          docker run --name build_container -v ${{ github.workspace }}:/workspace buildenv:0.0.1 make -C /workspace all
     - name: Copy kernel8.img from Docker container
       run: docker cp build_container:/workspace/kernel8.img kernel8.img
     - name: Upload kernel8.img as an artifact
