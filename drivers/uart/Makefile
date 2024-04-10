@@ -1,1 +1,1 @@
-obj-y += mini_uart.o
+obj-$(CONFIG_CONFIG_MINI_UART) += mini_uart.o

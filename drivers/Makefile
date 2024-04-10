@@ -1,1 +1,1 @@
-obj-y += uart/
+obj-$(CONFIG_CONFIG_UART) += uart/

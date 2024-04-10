@@ -31,7 +31,7 @@ unexport GREP_OPTIONS
 # their own directory. If in some directory we have a dependency on
 # a file in another dir (which doesn't happen often, but it's often
 # unavoidable when linking the built-in.o targets which finally
-# turn into myapp), we will call a sub make in that other dir, and
+# turn into cranberry), we will call a sub make in that other dir, and
 # after that we are sure that everything which is in that other dir
 # is now up to date.
 #
@@ -395,7 +395,7 @@ config: scripts_basic outputmakefile FORCE
 
 else
 # ===========================================================================
-# Build targets only - this includes myapp, arch specific targets, clean
+# Build targets only - this includes cranberry, arch specific targets, clean
 # targets and others. In general all targets except *config targets.
 
 # Additional helpers built in scripts/
@@ -432,7 +432,7 @@ endif # $(dot-config)
 # The all: target is the default when no target is given on the
 # command line.
 # This allow a user to issue only 'make' to build the application
-# Defaults to myapp, but the arch makefile usually adds further targets
+# Defaults to cranberry, but the arch makefile usually adds further targets
 all: cranberry
 
 # The arch Makefile can set ARCH_{CPP,A,C}FLAGS to override the default
@@ -582,7 +582,7 @@ cranberry: $(cranberry-all) FORCE
 # make sure no implicit rule kicks in
 $(sort $(cranberry-all)): $(cranberry-dirs) ;
 
-# Handle descending into subdirectories listed in $(myapp-dirs)
+# Handle descending into subdirectories listed in $(cranberry-dirs)
 # Preset locale variables to speed up the build process. Limit locale
 # tweaks to this spot to avoid wrong language settings when running
 # make menuconfig etc.
