@@ -4,9 +4,10 @@
 .vscode/
 
 scripts/
-include/config/
-include/generated
-.config
+include/config/auto.conf
+include/generated/autoconf.h
+/.config
+/.config.old
 
 cranberry.elf
 kernel8.img

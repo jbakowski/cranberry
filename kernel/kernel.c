@@ -1,4 +1,4 @@
-#include "drivers/uart/mini_uart.h"
+#include "drivers/uart/pl011.h"
 #include "smp.h"
 #include "utils.h"
 
@@ -17,7 +17,7 @@ void kernel_secondary(unsigned int pid) {
 }
 
 void kernel_main(int secondary_wakeup_adr) {
-    uart_init(9600);
+    uart_init();
     uart_send_string("Hello world, from the main core!\r\n");
 
     uart_send_string("Waking up core 1...\r\n");
