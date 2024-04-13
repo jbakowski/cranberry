@@ -255,7 +255,7 @@ CHECK		= sparse
 CHECKFLAGS     := -D__linux__ -Dlinux -D__STDC__ -Dunix -D__unix__ \
 		  -Wbitwise -Wno-return-void $(CF)
 NOSTDINC_FLAGS  =
-CFLAGS_KERNEL	:= -nostdlib -nostartfiles -ffreestanding -Iinclude -mgeneral-regs-only -g
+CFLAGS_KERNEL	:= -nostdlib -nostartfiles -ffreestanding -Iinclude
 AFLAGS_KERNEL	=
 LDFLAGS			=
 # Use CRANBERRYINCLUDE when you must reference the include/ directory.
@@ -270,8 +270,6 @@ KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
 		   -fno-strict-aliasing -fno-common \
 		   -Werror-implicit-function-declaration \
 		   -Wno-format-security \
-		   -nostdlib -nostartfiles -ffreestanding -mgeneral-regs-only \
-		   -fPIC \
 		   -Iinclude/
 
 KBUILD_AFLAGS_KERNEL :=

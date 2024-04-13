@@ -5,7 +5,11 @@
 
 .globl _start
 _start:
-    b set_el1
+    mrs x0, mpidr_el1                   // check core id
+    and x0, x0,#0xFF                    // main core will initialize memory
+    mov x19, x0
+    cbz x0, el1_main_entry
+    b el1_secondary_entry
 
 proc_hang:
     b proc_hang
@@ -23,18 +27,18 @@ set_el1:
     ldr x0, =SPSR_VALUE                 // store the saved program status register
     msr spsr_el3, x0
 
-    mrs x0, mpidr_el1                   // check core id
-    and x0, x0,#0xFF                    // main core will initialize memory
-    mov x19, x0
-    cbz x0, el1_main_entry
-    b el1_secondary_entry
+    ldr x0, =CPACR_EL1_FPEN_ENABLE     // disable trapping of floating-point instructions
+    msr cpacr_el1, x0
+    ret
 
 el1_main_entry:
+    bl set_el1
     adr x0, main_init
     msr elr_el3, x0
     eret
 
 el1_secondary_entry:
+    bl set_el1
     adr x0, secondary_init
     msr elr_el3, x0
     eret
