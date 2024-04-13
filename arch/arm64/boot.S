@@ -1,17 +1,43 @@
+#include "sysregs.h"
 #include "mm.h"
 
 .section ".text.boot"
 
 .globl _start
 _start:
-    mrs    x0, mpidr_el1
-    and    x0, x0,#0xFF          // check processor id
-    mov    x19, x0
-    cbz    x0, main_init         // main core inits memory
-    b      secondary_init        // start up rest of the cores
+    b set_el1
 
 proc_hang:
     b proc_hang
+
+set_el1:
+    ldr x0, =SCTLR_VALUE_MMU_DISABLED   // disable the MMU
+    msr sctlr_el1, x0
+
+    ldr x0, =HCR_VALUE                  // disable the hypervisor
+    msr hcr_el2, x0
+
+    ldr x0, =SCR_VALUE                  // set EL2 execution state to AArch64
+    msr scr_el3, x0                     // lower exception levels are non-secure
+
+    ldr x0, =SPSR_VALUE                 // store the saved program status register
+    msr spsr_el3, x0
+
+    mrs x0, mpidr_el1                   // check core id
+    and x0, x0,#0xFF                    // main core will initialize memory
+    mov x19, x0
+    cbz x0, el1_main_entry
+    b el1_secondary_entry
+
+el1_main_entry:
+    adr x0, main_init
+    msr elr_el3, x0
+    eret
+
+el1_secondary_entry:
+    adr x0, secondary_init
+    msr elr_el3, x0
+    eret
 
 secondary_init:
     mrs x19, mpidr_el1
