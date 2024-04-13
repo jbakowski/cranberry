@@ -255,7 +255,7 @@ CHECK		= sparse
 CHECKFLAGS     := -D__linux__ -Dlinux -D__STDC__ -Dunix -D__unix__ \
 		  -Wbitwise -Wno-return-void $(CF)
 NOSTDINC_FLAGS  =
-CFLAGS_KERNEL	:= -nostdlib -nostartfiles -ffreestanding -Iinclude -mgeneral-regs-only
+CFLAGS_KERNEL	:= -nostdlib -nostartfiles -ffreestanding -Iinclude -mgeneral-regs-only -g
 AFLAGS_KERNEL	=
 LDFLAGS			=
 # Use CRANBERRYINCLUDE when you must reference the include/ directory.
@@ -573,7 +573,7 @@ cranberry-objs	:= $(patsubst %,%/built-in.o, $(objs-y))
 cranberry-all	:= $(cranberry-objs)
 
 quiet_cmd_cranberry = LD      $@
-      cmd_cranberry = $(LD) $(LDFLAGS) -T linker.ld -o $@.elf $(cranberry-objs) | sleep 3 | $(OBJCOPY) cranberry.elf -O binary kernel8.img
+      cmd_cranberry = $(LD) $(LDFLAGS) -T linker.ld -o $@.elf $(cranberry-objs) | $(OBJCOPY) cranberry.elf -O binary kernel8.img
 
 cranberry: $(cranberry-all) FORCE
 	+$(call if_changed,cranberry)

@@ -15,7 +15,7 @@
 //     *FBRD_reg = (unsigned short) ((fractional_value * 64) + 0.5);
 // }
 
-void uart_init(void) {
+void uart_init(int unused) {
     unsigned int selector;
 
     selector = get32(GPFSEL1);

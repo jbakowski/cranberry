@@ -1,31 +1,30 @@
-#include "drivers/uart/pl011.h"
+#include "printf.h"
+#include "drivers/uart/uart.h"
 #include "smp.h"
 #include "utils.h"
 
-volatile int busy;
+volatile int semaphore;
 
 void kernel_secondary(unsigned int pid) {
-    while(busy) {
-        delay(10);
+    while(semaphore != pid-1) {
+        delay(50);
     }
-    busy = 1;
     uart_send_string("Hello, from core: ");
-    uart_send(pid + '0');
+    // uart_send(pid + '0');
     uart_send_string("\r\n");
-    busy = 0;
+    semaphore++;
     while(1);
 }
 
 void kernel_main(int secondary_wakeup_adr) {
-    uart_init();
-    uart_send_string("Hello world, from the main core!\r\n");
-
-    uart_send_string("Waking up core 1...\r\n");
+    uart_init(9600);
+    printf("Hello world, from the main core!\r\n");
+    printf("Waking up core 1...\r\n");
     wakeup_core(1, secondary_wakeup_adr);
-    uart_send_string("Waking up core 2...\r\n");
+    printf("Waking up core 2...\r\n");
     wakeup_core(2, secondary_wakeup_adr);
-    uart_send_string("Waking up core 3...\r\n");
+    printf("Waking up core 3...\r\n");
     wakeup_core(3, secondary_wakeup_adr);
 
-    uart_send_string("All cores running, main process exiting\r\n");
+    printf("All cores running, main process exiting\r\n");
 }

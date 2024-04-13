@@ -9,5 +9,4 @@ qemu-system-aarch64 -s -S \
     -cpu cortex-a53 \
 	-kernel ${BIN} \
     -serial vc \
-    -serial vc \
     -serial vc
