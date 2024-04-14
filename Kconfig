@@ -6,6 +6,11 @@ mainmenu "Cranberry Configuration"
 
 menu "Device drivers"
 
+config TIMER
+	bool "Enable timer"
+	help
+		Enables the timer.
+
 config UART
 	bool "Enable UART devices"
 	help

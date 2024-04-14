@@ -2,12 +2,15 @@
 .dockerignore
 .github/
 .vscode/
+.cache/
 
 scripts/
 include/config/auto.conf
 include/generated/autoconf.h
 /.config
 /.config.old
+
+compile_commands.json
 
 cranberry.elf
 kernel8.img
