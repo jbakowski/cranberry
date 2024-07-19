@@ -28,9 +28,10 @@ void uart_send_string(char *str) {
 }
 
 void handle_uart_irq(void) {
-  char c = uart_recv();
-  uart_send(c);
-  uart_send_string("\n\r");
+  while ((get32(AUX_MU_IIR_REG) & IIR_REG_REC_NON_EMPTY) ==
+         IIR_REG_REC_NON_EMPTY) {
+    uart_send(uart_recv());
+  }
 }
 
 void uart_init(unsigned int baudrate) {

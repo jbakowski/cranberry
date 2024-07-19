@@ -14,8 +14,6 @@
 #define DISABLE_IRQS_2 (PBASE + 0x0000B220)
 #define DISABLE_BASIC_IRQS (PBASE + 0x0000B224)
 
-#define CORE0_INTERRUPT_SOURCES (LPBASE + 0x60)
-
 #define SYSTEM_TIMER_IRQ_0 (1 << 0)
 #define SYSTEM_TIMER_IRQ_1 (1 << 1)
 #define SYSTEM_TIMER_IRQ_2 (1 << 2)
@@ -23,9 +21,6 @@
 
 #define LOCAL_TIMER_IRQ (1 << 11)
 
-#define AUX_IRQ (PBASE + 0x00215000)
-#define AUX_IRQ_MINI_UART (1 << 0)
-#define AUX_IRQ_SPI1_IRQ (1 << 1)
-#define AUX_IRQ_SPI2_IRQ (1 << 2)
+#define AUX_IRQ (1 << 29)
 
 #endif /*_P_IRQ_H */

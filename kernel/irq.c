@@ -19,7 +19,7 @@ const char *entry_error_messages[] = {
     "FIQ_INVALID_EL0_32",  "ERROR_INVALID_EL0_32"};
 
 void enable_interrupt_controller(void) {
-  put32(ENABLE_IRQS_1, SYSTEM_TIMER_IRQ_1);
+  put32(ENABLE_IRQS_1, SYSTEM_TIMER_IRQ_1 | AUX_IRQ);
 }
 
 void show_invalid_entry_message(int type, unsigned long esr,
@@ -30,21 +30,17 @@ void show_invalid_entry_message(int type, unsigned long esr,
 
 void handle_irq(void) {
   unsigned int irq = get32(IRQ_PENDING_1);
-  // wrap the handler in a loop to handle
-  // multiple interrupts during a single
-  // handler execution
-  while (irq != 0) {
-    switch (irq) {
-    case (SYSTEM_TIMER_IRQ_1):
+
+  while (irq) {
+    if (irq & SYSTEM_TIMER_IRQ_1) {
       handle_timer_irq();
-      break;
-    case (LOCAL_TIMER_IRQ):
-      handle_local_timer_irq();
-      break;
-    default:
+      irq &= ~SYSTEM_TIMER_IRQ_1;
+    } else if (irq & AUX_IRQ) {
+      handle_uart_irq();
+      irq &= ~AUX_IRQ;
+    } else {
       printf("Unknown pending irq: %x\r\n", irq);
-      break;
+      irq = 0;
     }
-    irq = get32(IRQ_PENDING_1);
   }
 }

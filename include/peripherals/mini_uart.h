@@ -3,6 +3,7 @@
 
 #include "peripherals/base.h"
 
+#define AUX_IRQ_REG (PBASE + 0x00215000)
 #define AUX_ENABLES (PBASE + 0x00215004)
 #define AUX_MU_IO_REG (PBASE + 0x00215040)
 #define AUX_MU_IER_REG (PBASE + 0x00215044)
@@ -15,5 +16,11 @@
 #define AUX_MU_CNTL_REG (PBASE + 0x00215060)
 #define AUX_MU_STAT_REG (PBASE + 0x00215064)
 #define AUX_MU_BAUD_REG (PBASE + 0x00215068)
+
+#define IER_REG_EN_REC_INIT (1 << 0)
+#define IER_REG_INT (3 << 2)
+#define IER_REG_VALUE (IER_REG_EN_REC_INIT | IER_REG_INT)
+
+#define IIR_REG_REC_NON_EMPTY (2 << 1)
 
 #endif /*_P_MINI_UART_H */
