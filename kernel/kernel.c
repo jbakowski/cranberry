@@ -28,6 +28,5 @@ void kernel_main(int secondary_wakeup_adr) {
   enable_irq();
 
   while (1) {
-    uart_send(uart_recv());
   }
 }

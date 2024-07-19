@@ -1,9 +1,10 @@
 #ifndef _UART_H
 #define _UART_H
 
-char uart_init(int baudrate);
+void uart_init(unsigned int baudrate);
 char uart_recv(void);
 void uart_send(char c);
-void uart_send_string(char* str);
+void uart_send_string(char *str);
+void handle_uart_irq(void);
 
 #endif /* _UART_H */

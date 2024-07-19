@@ -24,6 +24,6 @@ void local_timer_init(void) {
 }
 
 void handle_local_timer_irq(void) {
-  printf("Local timer interrupt received\n\r");
+  // printf("Local timer interrupt received\n\r");
   put32(LTIMER_CLR, LTIMER_CLR_ACK);
 }

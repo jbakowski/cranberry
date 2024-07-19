@@ -23,4 +23,9 @@
 
 #define LOCAL_TIMER_IRQ (1 << 11)
 
+#define AUX_IRQ (PBASE + 0x00215000)
+#define AUX_IRQ_MINI_UART (1 << 0)
+#define AUX_IRQ_SPI1_IRQ (1 << 1)
+#define AUX_IRQ_SPI2_IRQ (1 << 2)
+
 #endif /*_P_IRQ_H */

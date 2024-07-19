@@ -4,6 +4,6 @@
  * Cranberry Configuration
  *
  */
-#define CONFIG_UART_PL011 1
 #define CONFIG_TIMER 1
+#define CONFIG_MINI_UART 1
 #define CONFIG_UART 1

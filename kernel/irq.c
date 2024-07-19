@@ -1,4 +1,5 @@
 #include "peripherals/irq.h"
+#include "drivers/uart/uart.h"
 #include "entry.h"
 #include "printf.h"
 #include "timer.h"
@@ -48,5 +49,14 @@ void handle_irq(void) {
       break;
     }
     irq = get32(IRQ_PENDING_1);
+  }
+
+  irq = get32(AUX_IRQ);
+  while (irq != 0) {
+    switch (irq) {
+    case (AUX_IRQ_MINI_UART):
+      handle_uart_irq();
+      break;
+    }
   }
 }
