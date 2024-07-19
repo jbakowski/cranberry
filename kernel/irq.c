@@ -35,10 +35,7 @@ void handle_irq(void) {
   // handler execution
   while (irq != 0) {
     switch (irq) {
-    case (SYSTEM_TIMER_IRQ_0):
     case (SYSTEM_TIMER_IRQ_1):
-    case (SYSTEM_TIMER_IRQ_2):
-    case (SYSTEM_TIMER_IRQ_3):
       handle_timer_irq();
       break;
     case (LOCAL_TIMER_IRQ):
@@ -49,14 +46,5 @@ void handle_irq(void) {
       break;
     }
     irq = get32(IRQ_PENDING_1);
-  }
-
-  irq = get32(AUX_IRQ);
-  while (irq != 0) {
-    switch (irq) {
-    case (AUX_IRQ_MINI_UART):
-      handle_uart_irq();
-      break;
-    }
   }
 }

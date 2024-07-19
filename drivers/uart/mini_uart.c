@@ -63,3 +63,5 @@ void uart_init(unsigned int baudrate) {
 
   put32(AUX_MU_CNTL_REG, 3); // finally, enable transmitter and receiver
 }
+
+void putc(void *p, char c) { uart_send(c); }

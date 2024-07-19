@@ -21,12 +21,12 @@ void kernel_secondary(unsigned int pid) {
 
 void kernel_main(int secondary_wakeup_adr) {
   uart_init(9600);
+  init_printf(0, putc);
   irq_vector_init();
   // local_timer_init();
   timer_init();
   enable_interrupt_controller();
   enable_irq();
-
   while (1) {
   }
 }
