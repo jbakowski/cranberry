@@ -14,9 +14,10 @@ void preempt_disable(void) { current->preempt_count++; }
 void preempt_enable(void) { current->preempt_count--; }
 
 void _schedule(void) {
-  preempt_disable();
-  int next, c;
+  int next;
+  int c;
   struct task_struct *p;
+  preempt_disable();
   while (1) {
     c = -1;
     next = 0;
@@ -47,9 +48,9 @@ void schedule(void) {
 }
 
 void switch_to(struct task_struct *next) {
+  struct task_struct *prev = current;
   if (current == next)
     return;
-  struct task_struct *prev = current;
   current = next;
   cpu_switch_to(prev, next);
 }

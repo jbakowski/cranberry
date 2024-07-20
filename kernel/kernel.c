@@ -31,12 +31,12 @@ void kernel_main(int secondary_wakeup_adr) {
   enable_interrupt_controller();
   enable_irq();
 
-  res = copy_process((unsigned long)&process, (unsigned long)"12345");
+  res = copy_process((unsigned long)&process, (unsigned long)"12345", 4);
   if (res != 0) {
     printf("Error while starting process 1");
     return;
   }
-  res = copy_process((unsigned long)&process, (unsigned long)"abcde");
+  res = copy_process((unsigned long)&process, (unsigned long)"abcde", 1);
   if (res != 0) {
     printf("Error while starting process 2");
     return;
