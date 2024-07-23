@@ -4,3 +4,4 @@ obj-y += irq.o
 obj-y += entry.o
 obj-y += scheduler.o
 obj-y += mm.o
+obj-y += sys.o

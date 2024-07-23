@@ -3,3 +3,4 @@ obj-y += kernel.o
 obj-y += irq.o
 obj-y += scheduler.o
 obj-y += fork.o
+obj-y += sys.o

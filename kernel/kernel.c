@@ -3,15 +3,55 @@
 #include "irq.h"
 #include "printf.h"
 #include "scheduler.h"
+#include "sys.h"
 #include "timer.h"
 #include "utils.h"
 
-void process(char *array) {
+void user_process1(char *array) {
+  char buf[2] = {0};
   while (1) {
     for (int i = 0; i < 5; i++) {
-      uart_send(array[i]);
+      buf[0] = array[i];
+      call_sys_write(buf);
       delay(100000);
     }
+  }
+}
+
+void user_process(void) {
+  char buf[30] = {0};
+  tfp_sprintf(buf, "User process started \n\r");
+  call_sys_write(buf);
+  unsigned long stack = call_sys_malloc();
+  if (stack < 0) {
+    printf("Error while allocating stack for process 1\n\r");
+    return;
+  }
+  int err = call_sys_clone((unsigned long)&user_process1, (unsigned long)"1234",
+                           stack, 5);
+  if (err < 0) {
+    printf("Error while cloning process 1\n\r");
+    return;
+  }
+  stack = call_sys_malloc();
+  if (stack < 0) {
+    printf("Error while allocating stack for process 1\n\r");
+    return;
+  }
+  err = call_sys_clone((unsigned long)&user_process1, (unsigned long)"abcd",
+                       stack, 3);
+  if (err < 0) {
+    printf("Error while cloning process 2\n\r");
+    return;
+  }
+  call_sys_exit();
+}
+
+void kernel_process(void) {
+  printf("Kernel process started. EL %d\r\n", get_el());
+  int err = move_to_user_mode((unsigned long)&user_process);
+  if (err < 0) {
+    printf("Error while moving process to user mode\n\r");
   }
 }
 
@@ -31,14 +71,9 @@ void kernel_main(int secondary_wakeup_adr) {
   enable_interrupt_controller();
   enable_irq();
 
-  res = copy_process((unsigned long)&process, (unsigned long)"12345", 4);
-  if (res != 0) {
-    printf("Error while starting process 1");
-    return;
-  }
-  res = copy_process((unsigned long)&process, (unsigned long)"abcde", 1);
-  if (res != 0) {
-    printf("Error while starting process 2");
+  res = copy_process(PF_KTHREAD, (unsigned long)&kernel_process, 0, 0, 3);
+  if (res < 0) {
+    printf("Error while starting kernel process");
     return;
   }
 
