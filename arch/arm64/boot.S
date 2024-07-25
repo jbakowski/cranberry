@@ -1,4 +1,4 @@
-#include "sysregs.h"
+#include "arch/arm64/sysregs.h"
 #include "mm.h"
 
 .section ".text.boot"

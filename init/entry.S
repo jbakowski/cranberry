@@ -1,5 +1,5 @@
 #include "entry.h"
-#include "sysregs.h"
+#include "arch/arm64/sysregs.h"
 #include "sys.h"
 
 .macro  ventry  label // vector table entry macro

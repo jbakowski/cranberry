@@ -256,7 +256,7 @@ CHECKFLAGS     := -D__linux__ -Dlinux -D__STDC__ -Dunix -D__unix__ \
 		  -Wbitwise -Wno-return-void $(CF)
 NOSTDINC_FLAGS  =
 CFLAGS_KERNEL	:= -nostdlib -nostartfiles -ffreestanding -Iinclude
-AFLAGS_KERNEL	=
+AFLAGS_KERNEL	= -Iinclude
 LDFLAGS			=
 # Use CRANBERRYINCLUDE when you must reference the include/ directory.
 # Needed to be compatible with the O= option
