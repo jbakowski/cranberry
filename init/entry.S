@@ -16,6 +16,13 @@
   b	err_hang
 .endm
 
+.macro handle_data_abort el
+  kernel_entry \el
+  mrs x0, esr_el1
+  mrs x1, far_el1
+  bl show_data_abort_message
+.endm
+
 .macro	kernel_entry, el
 	sub	sp, sp, #S_FRAME_SIZE
 	stp	x0, x1, [sp, #16 * 0]
@@ -86,7 +93,7 @@ vectors:
 	ventry	fiq_invalid_el1t			  // FIQ EL1t
 	ventry	error_invalid_el1t			// error EL1t
 
-	ventry	sync_invalid_el1h			  // synchronous EL1h
+	ventry	el1_sync        			  // synchronous EL1h
 	ventry	el1_irq					        // IRQ EL1h
 	ventry	fiq_invalid_el1h			  // FIQ EL1h
 	ventry	error_invalid_el1h			// error EL1h
@@ -125,9 +132,6 @@ error_invalid_el1h:
 fiq_invalid_el0_64:
   handle_invalid_entry 0, FIQ_INVALID_EL0_64
 
-sync_invalid_el0_64:
-	handle_invalid_entry 0, SYNC_INVALID_EL0_64
-
 error_invalid_el0_64:
 	handle_invalid_entry 0, ERROR_INVALID_EL0_64
 
@@ -142,6 +146,18 @@ fiq_invalid_el0_32:
 
 error_invalid_el0_32:
 	handle_invalid_entry 0, ERROR_INVALID_EL0_32
+
+el1_sync:
+  kernel_entry 1
+  mrs x25, esr_el1
+  lsr x24, x25, #ESR_ELx_EC_SHIFT
+  cmp x24, #ESR_ELx_EC_DABT_CUR
+  b.eq el1_da
+  handle_invalid_entry 0, SYNC_ERROR
+
+el1_da:
+  handle_data_abort 1
+  kernel_exit 1
 
 el1_irq:
 	kernel_entry 1

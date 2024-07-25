@@ -18,13 +18,20 @@ call_sys_exit:
   svc #0
   ret
 
+.globl call_sys_priority
+call_sys_priority:
+  mov w8, #SYS_PRIORITY_NUMBER
+  svc #0
+  ret
+
 .globl call_sys_clone
 call_sys_clone:
   mov x10, x0   // fn
   mov x11, x1   // arg
   mov x12, x2   // stack
 
-  mov x0, x2 
+  mov x0, x2
+  mov x1, x3
   mov x8, #SYS_CLONE_NUMBER
   svc 0x0
 

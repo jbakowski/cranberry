@@ -2,6 +2,7 @@
 #include "drivers/uart/uart.h"
 #include "entry.h"
 #include "printf.h"
+#include "scheduler.h"
 #include "timer.h"
 #include "utils.h"
 
@@ -24,8 +25,15 @@ void enable_interrupt_controller(void) {
 
 void show_invalid_entry_message(int type, unsigned long esr,
                                 unsigned long address) {
+  printf("Type: %d\r\n");
   printf("%s, ESR: %x, address: %x\r\n", entry_error_messages[type], esr,
          address);
+}
+
+void show_data_abort_message(unsigned long esr, unsigned long address) {
+  printf("Data abort exception, ESR:%x, fault address: %x\r\n", esr, address);
+  printf("terminating faulting process...\r\n");
+  exit_process();
 }
 
 void handle_irq(void) {

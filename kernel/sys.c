@@ -20,4 +20,7 @@ unsigned long sys_malloc(void) {
 
 void sys_exit(void) { exit_process(); }
 
-void *const sys_call_table[] = {sys_write, sys_clone, sys_malloc, sys_exit};
+void sys_priority(unsigned long priority) { current->priority = priority; }
+
+void *const sys_call_table[] = {sys_write, sys_clone, sys_malloc, sys_exit,
+                                sys_priority};

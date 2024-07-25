@@ -39,16 +39,17 @@ void user_process(void) {
     return;
   }
   err = call_sys_clone((unsigned long)&user_process1, (unsigned long)"abcd",
-                       stack, 3);
+                       stack, 5);
   if (err < 0) {
     printf("Error while cloning process 2\n\r");
     return;
   }
+  printf("exiting user_process\r\n");
   call_sys_exit();
 }
 
 void kernel_process(void) {
-  printf("Kernel process started. EL %d\r\n", get_el());
+  printf("kernel proc prio: %d\r\n", current->priority);
   int err = move_to_user_mode((unsigned long)&user_process);
   if (err < 0) {
     printf("Error while moving process to user mode\n\r");
